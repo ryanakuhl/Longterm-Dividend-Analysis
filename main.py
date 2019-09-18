@@ -6,9 +6,6 @@ book = xlrd.open_workbook("dividends.xlsx")
 print("Worksheet name(s): {0}".format(book.sheet_names()))
 ie_token = '****************************'
 
-#stocks_to_lookup = ['adp', 'gpc', 'itw', 'mo', 'frt', 'pm', 'cb', 'pep', 'doc', 'o', 'mdt', 'leg', 'csco', 'jpm', 'dlr', 'gd', 'apd', 'bx', 'spgadp', 'spg', 'psx', 'ba', 'ph', 'jnj', 'mmm', 'xom', 'lyb', 'utx', 'ip', 'tap', 'ed', 'dov', 'blk', 'psa', 'ko', 'irm', 'bpc', 'nee']
-#half_mill_yields_retirement = ['spy', 'epr', 'good', 'ltc', 'o', 'stag', 'main', 'gain', 'agg', 'hyt', 'etx', 'phb', 'kio', 'vwob', 'pff', 'psf', 'fpf', 'hpi']
-
 class AllStock():
     def __init__(self, row, x):
         self.ticker = row[0].value
