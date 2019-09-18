@@ -4,7 +4,7 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 book = xlrd.open_workbook("dividends.xlsx")
 print("Worksheet name(s): {0}".format(book.sheet_names()))
-ie_token = '*********************'
+ie_token = '****************************'
 
 #stocks_to_lookup = ['adp', 'gpc', 'itw', 'mo', 'frt', 'pm', 'cb', 'pep', 'doc', 'o', 'mdt', 'leg', 'csco', 'jpm', 'dlr', 'gd', 'apd', 'bx', 'spgadp', 'spg', 'psx', 'ba', 'ph', 'jnj', 'mmm', 'xom', 'lyb', 'utx', 'ip', 'tap', 'ed', 'dov', 'blk', 'psa', 'ko', 'irm', 'bpc', 'nee']
 #half_mill_yields_retirement = ['spy', 'epr', 'good', 'ltc', 'o', 'stag', 'main', 'gain', 'agg', 'hyt', 'etx', 'phb', 'kio', 'vwob', 'pff', 'psf', 'fpf', 'hpi']
@@ -32,7 +32,7 @@ class AllStock():
 
     def funt_stock_basic(self):
         warnings.simplefilter('ignore', InsecureRequestWarning)
-        p = requests.get('https://cloud.iexapis.com/stable/stock/' + self.ticker + '/quote?token=', verify=False)
+        p = requests.get('https://cloud.iexapis.com/stable/stock/' + self.ticker + '/quote?token=' + ie_token, verify=False)
         return json.loads(p.content.decode('utf-8'))
 
     def funt_financials(self):
@@ -58,7 +58,7 @@ def set_the_att(returned_dict):
         try:
             setattr(allstocks, a, returned_dict[a])
         except Exception as e:
-            print('line 64', e, returned_dict)
+            print('line 61', e, returned_dict)
 
 def advanced_research(allstocks):
     if allstocks.latestPrice > (allstocks.week52High * .9):
@@ -71,7 +71,6 @@ def advanced_research(allstocks):
         return True
 
 sh = [book.sheet_by_index(x) for x in range(0, len(book.sheet_names()))]
-
 block_dups = []
 for a in list(set(sh)):
     try:
@@ -81,7 +80,7 @@ for a in list(set(sh)):
                 block_dups.append(a.row(rx)[0])
                 if allstocks.funt_init_analyze():
                     set_the_att(allstocks.funt_stock_basic())
-                    if allstocks.week52Low:
+                    if hasattr(allstocks, 'week52Low') and type(allstocks.week52Low) is int or type(allstocks.week52Low) is float:
                         if advanced_research(allstocks):
                             """not available to free acounts
                             #set_the_att(allstocks.funt_financials())
@@ -97,8 +96,9 @@ for a in list(set(sh)):
                                 else:
                             set_the_att(allstocks.funt_earnings_report())"""
                             set_the_att(allstocks.funt_dividends()[0])
-                            print('SUCCESSSSSS ', allstocks.ticker)
-                            #xx = vars(allstocks).keys()
+                            print('Success ', allstocks.ticker, allstocks.latestPrice)
+                            #get all attributes and values
+                            # xx = vars(allstocks).keys()
                             #for x in xx:
                             #    print(x, allstocks.__getattribute__(x))
                             """
@@ -112,7 +112,7 @@ for a in list(set(sh)):
                         
                             """
     except Exception as e:
-        print('line 121 ', a.row(rx)[0], e)
+        print('line 115 ', a.row(rx)[0], e)
     time.sleep(5)
 
 
