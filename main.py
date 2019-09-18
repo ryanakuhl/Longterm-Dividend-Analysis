@@ -24,7 +24,6 @@ class AllStock():
                     if self.Dividend_Yield > 3.75:
                         if self.Market_Cap > 10:
                             #if int(self.latestPrice) in range(4,12):
-                            #print('Possible: ', self.ticker, self.latestPrice)
                             return True
 
     def funt_stock_basic(self):
